@@ -1,6 +1,7 @@
 package com.desafio.clients_crud.controllers.handlers;
 
 import com.desafio.clients_crud.dto.CustomError;
+import com.desafio.clients_crud.services.exceptions.DatabaseException;
 import com.desafio.clients_crud.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -19,4 +20,5 @@ public class ControllerExceptionHandler {
         CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
+
 }
