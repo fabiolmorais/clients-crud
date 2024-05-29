@@ -34,12 +34,15 @@ public class ClientService {
 
     @Transactional()
     public ClientDTO insert (ClientDTO dto) {
+        try {
+            Client entity = new Client();
+            copyDtoToEntity(dto, entity);
 
-        Client entity = new Client();
-        copyDtoToEntity(dto, entity);
-
-        entity = repository.save(entity);
-        return new ClientDTO(entity);
+            entity = repository.save(entity);
+            return new ClientDTO(entity);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("CPF já registrado!");
+        }
     }
 
     @Transactional()
@@ -60,7 +63,7 @@ public class ClientService {
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Recurso não encontrado");
         }
-        
+
         repository.deleteById(id);
 
     }
